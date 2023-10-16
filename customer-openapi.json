@@ -1,0 +1,209 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Beyond Energy Customer API",
+    "description": "This page describes how to interact with the BeyondEnergy Customer API.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://",
+      "description": "Main production server"
+    }
+  ],
+  "paths": {
+    "/aansluitingen": {
+      "get": {
+        "tags": [
+          "Listing"
+        ],
+        "summary": "Get all accessible aansluitingen",
+        "responses": {
+          "200": {
+            "description": "Succesful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AansluitingList"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metingen/{id}/{start_date}/{end_date}/{data_type}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "in": "path",
+          "name": "start_date",
+          "schema": {
+            "type": "string",
+            "format": "date"
+          },
+          "required": true,
+          "description": "Start date to request from (inclusive)."
+        },
+        {
+          "in": "path",
+          "name": "end_date",
+          "schema": {
+            "type": "string",
+            "format": "date"
+          },
+          "required": true,
+          "description": "End date to request until (inclusive)."
+        },
+        {
+          "in": "path",
+          "name": "data_type",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "M"
+            ]
+          },
+          "required": true,
+          "description": "The data type to fetch."
+        }
+      ],
+      "get": {
+        "summary": "Get meetdata for a specific aansluiting",
+        "tags": [
+          "Metingen"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeetdataList"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Aansluiting does not exist or API Key is not authorized to view meetdata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "Unauthorized"
+          },
+          "message": {
+            "type": "string",
+            "example": "You are not authorized to access this endpoint."
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ]
+      },
+      "AansluitingList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Aansluiting"
+        }
+      },
+      "Aansluiting": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 8064
+          },
+          "naam": {
+            "type": "string",
+            "example": "ABCDEF"
+          }
+        },
+        "required": [
+          "id",
+          "naam"
+        ]
+      },
+      "MeetdataList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Meetdata"
+        }
+      },
+      "Meetdata": {
+        "type": "object",
+        "properties": {
+          "measure_date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2000-01-01T00:00:00Z",
+            "description": "The measurement date being requested - the returned date is for the next period (ie. 01-01-2000 will be the verbruik for January 2000.)"
+          },
+          "verbruik": {
+            "type": "integer",
+            "example": "256"
+          },
+          "consumption": {
+            "type": "boolean"
+          }
+        },
+        "required": ["measure_date", "verbruik", "consumption"]
+      }
+    },
+    "securitySchemes": {
+      "APIKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY"
+      }
+    }
+  },
+  "security": [
+    {
+      "APIKeyAuth": []
+    }
+  ]
+}
