@@ -12,19 +12,19 @@
     }
   ],
   "paths": {
-    "/aansluitingen": {
+    "/endpoints": {
       "get": {
         "tags": [
           "Listing"
         ],
-        "summary": "Get all accessible aansluitingen",
+        "summary": "Get all accessible endpoints",
         "responses": {
           "200": {
             "description": "Succesful response.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AansluitingList"
+                  "$ref": "#/components/schemas/EndpointList"
                 }
               }
             }
@@ -42,7 +42,7 @@
         }
       }
     },
-    "/metingen/{id}/{start_date}/{end_date}/{data_type}": {
+    "/endpointdata/{id}/{start_date}/{end_date}/{data_type}": {
       "parameters": [
         {
           "in": "path",
@@ -86,7 +86,7 @@
         }
       ],
       "get": {
-        "summary": "Get meetdata for a specific aansluiting",
+        "summary": "Get data for a specific aansluiting",
         "tags": [
           "Metingen"
         ],
@@ -96,7 +96,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/MeetdataList"
+                  "$ref": "#/components/schemas/MeasurementList"
                 }
               }
             }
@@ -144,13 +144,13 @@
           "message"
         ]
       },
-      "AansluitingList": {
+      "EndpointList": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/Aansluiting"
+          "$ref": "#/components/schemas/Endpoint"
         }
       },
-      "Aansluiting": {
+      "Endpoint": {
         "type": "object",
         "properties": {
           "id": {
@@ -167,13 +167,13 @@
           "naam"
         ]
       },
-      "MeetdataList": {
+      "MeasurementList": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/Meetdata"
+          "$ref": "#/components/schemas/Measurement"
         }
       },
-      "Meetdata": {
+      "Measurement": {
         "type": "object",
         "properties": {
           "measure_date": {
