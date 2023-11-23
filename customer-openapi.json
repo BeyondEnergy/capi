@@ -78,11 +78,14 @@
           "schema": {
             "type": "string",
             "enum": [
-              "M"
+              "M",
+              "D",
+              "H",
+              "Q"
             ]
           },
           "required": true,
-          "description": "The data type to fetch."
+          "description": "The data type to fetch. Which data types can be used may be restricted by the API key."
         }
       ],
       "get": {
