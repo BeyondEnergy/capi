@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Beyond Energy Customer API",
-    "description": "This page describes how to interact with the BeyondEnergy Customer API.",
+    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16`, with a total limitation of 200 requests per individual endpoint ID.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.",
     "version": "1.0.0"
   },
   "servers": [
@@ -31,6 +31,16 @@
           },
           "403": {
             "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited.",
             "content": {
               "application/json": {
                 "schema": {
@@ -106,6 +116,16 @@
           },
           "403": {
             "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited.",
             "content": {
               "application/json": {
                 "schema": {
