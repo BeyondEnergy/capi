@@ -6,6 +6,7 @@ window.onload = function() {
     url: "https://beyondenergy.github.io/capi/customer-openapi.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
+    supportedSubmitMethods: [],
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
