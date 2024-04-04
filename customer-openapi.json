@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Beyond Energy Customer API",
-    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16`, with a total limitation of 200 requests per individual endpoint ID.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.",
-    "version": "1.0.0"
+    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16`, with a total limitation of 200 requests per individual endpoint ID.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoint_buildings` is a restricted endpoint - ask Beyond Energy for access.",
+    "version": "1.1.0"
   },
   "servers": [
     {
@@ -25,6 +25,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EndpointList"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/endpoints_buildings": {
+      "get": {
+        "tags": [
+          "Listing"
+        ],
+        "summary": "Get all accessible endpoints, organized by building.",
+        "responses": {
+          "200": {
+            "description": "Succesful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointBuildingList"
                 }
               }
             }
@@ -171,6 +211,95 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Endpoint"
+        }
+      },
+      "EndpointBuildingList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EndpointBuilding"
+        }
+      },
+      "EndpointBuilding": {
+        "type": "object",
+        "properties": {
+          "object_id": {
+            "type": "integer",
+            "example": 3021
+          },
+          "description": {
+            "type": "string",
+            "example": "ABCDEF"
+          },
+          "meters": {
+            "$ref": "#/components/schemas/ExpandedEndpointList"
+          }
+        }
+      },
+      "ExpandedEndpointList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ExpandedEndpoint"
+        }
+      },
+      "ExpandedEndpoint": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 8064
+          },
+          "naam": {
+            "type": "string",
+            "example": "ABCDEF"
+          },
+          "nuts": {
+            "type": "string",
+            "example": "A"
+          },
+          "unit": {
+            "type": "string",
+            "example": "KWH"
+          },
+          "adres": {
+            "$ref": "#/components/schemas/Adres"
+          }
+        }
+      },
+      "Adres": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 7777
+          },
+          "naam": {
+            "type": "string",
+            "example": "ABCDEF"
+          },
+          "zipcode": {
+            "type": "string",
+            "example": "ABCDEF"
+          },
+          "house_nr": {
+            "type": "string",
+            "example": "12"
+          },
+          "house_nr_addition": {
+            "type": "string",
+            "example": "-CE"
+          },
+          "street": {
+            "type": "string",
+            "example": "ABCDEF"
+          },
+          "latitude": {
+            "type": "integer",
+            "example": 5.1
+          },
+          "longitude": {
+            "type": "integer",
+            "example": 5.1
+          }
         }
       },
       "Endpoint": {
