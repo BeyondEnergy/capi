@@ -260,6 +260,10 @@
             "type": "string",
             "example": "KWH"
           },
+          "type": {
+            "type": "string",
+            "example": "O"
+          },
           "adres": {
             "$ref": "#/components/schemas/Adres"
           }
