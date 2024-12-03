@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Beyond Energy Customer API",
-    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16`, with a total limitation of 200 requests per individual endpoint ID.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoint_buildings` is a restricted endpoint - ask Beyond Energy for access.",
-    "version": "1.1.0"
+    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* A global limit of 1 request per 5 seconds applies to this API.\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16`, with a total limitation of 200 requests per individual endpoint ID.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoint_buildings` is a restricted endpoint - ask Beyond Energy for access.",
+    "version": "1.1.1"
   },
   "servers": [
     {
