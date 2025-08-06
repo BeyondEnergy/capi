@@ -2,8 +2,8 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Beyond Energy Customer API",
-    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* A global limit of 1 request per 5 seconds applies to this API.\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16` requests every 24 hours. You may not request a single endpoint ID more than 200 times in 24 hours.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoint_buildings` is a restricted endpoint - ask Beyond Energy for access.",
-    "version": "1.1.2"
+    "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16` requests every 24 hours. You may not request a single endpoint ID more than 200 times in 24 hours.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoints_buildings` and `/endpoints_details` are restricted endpoints - ask Beyond Energy for access.\n  * `/endpoints_details`: The fields available on this endpoint depend on the API key.",
+    "version": "1.2.0"
   },
   "servers": [
     {
@@ -65,6 +65,46 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/EndpointBuildingList"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthenticated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/endpoints_details": {
+      "get": {
+        "tags": [
+          "Listing"
+        ],
+        "summary": "Get all accessible endpoints, with key-specific metadata.",
+        "responses": {
+          "200": {
+            "description": "Succesful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndpointDetailList"
                 }
               }
             }
@@ -266,6 +306,30 @@
           },
           "adres": {
             "$ref": "#/components/schemas/Adres"
+          }
+        }
+      },
+      "EndpointDetailList": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EndpointDetail"
+        }
+      },
+      "EndpointDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 8064
+          },
+          "endpoint": {
+            "type": "object"
+          },
+          "building": {
+            "type": "object"
+          },
+          "adres": {
+            "type": "object"
           }
         }
       },
