@@ -3,7 +3,7 @@
   "info": {
     "title": "Beyond Energy Customer API",
     "description": "This page describes how to interact with the BeyondEnergy Customer API.\n## Rate limits\n* The `/endpoints` and `/endpoints_buildings` endpoint is restricted to a rate limit of `X / 10` requests every 24 hours, with a lower bound of 30 requests.\n* The `/endpointdata` endpoint is restricted depending on the type of data requested.\n  * For `data_type` `M`, the endpoint is restricted to a rate limit of: `X * 16` requests every 24 hours. You may not request a single endpoint ID more than 200 times in 24 hours.\n* In all these descriptions, `X` is equal to the amount of endpoints that the API key has access to.\n* `/endpoints_buildings` and `/endpoints_details` are restricted endpoints - ask Beyond Energy for access.\n  * `/endpoints_details`: The fields available on this endpoint depend on the API key.",
-    "version": "1.2.0"
+    "version": "1.2.1"
   },
   "servers": [
     {
@@ -400,7 +400,7 @@
             "type": "string",
             "format": "date-time",
             "example": "2000-01-01T00:00:00Z",
-            "description": "The measurement date being requested - the returned date is for the next period (ie. 01-01-2000 will be the usage for January 2000.)"
+            "description": "The measurement date being requested - the returned date is for the previous period (ie. 01-01-2000 will be the usage for December 1999.)"
           },
           "usage": {
             "type": "integer",
